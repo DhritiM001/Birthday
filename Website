@@ -38,13 +38,13 @@
 </head>
 <body>
 
-  <h1>🎂 Happy Birthday, [Name]! 🎉</h1>
-  <p>Wishing you a day filled with love, laughter, and cake!</p>
+  <h1>🎂 Happy Birthday, [Friend's Name]! 🎉</h1>
+  <p>Wishing you all the joy, cake, and good vibes today! 💖</p>
 
-  <img src="https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif" alt="Birthday GIF">
+  <img src="https://media.giphy.com/media/3ohs4BSacFKI7A717y/giphy.gif" alt="Birthday GIF">
 
   <br>
-  <a class="button" href="https://youtu.be/dQw4w9WgXcQ" target="_blank">🎁 Click for a surprise!</a>
+  <a class="button" href="https://youtu.be/dQw4w9WgXcQ" target="_blank">🎁 Click for a Surprise!</a>
 
 </body>
 </html>
