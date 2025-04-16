@@ -19,19 +19,19 @@
       color: #333;
     }
     img {
-      width: 250px;
+      width: 450px;
       margin-top: 20px;
       border-radius: 20px;
     }
     .button {
       display: inline-block;
-      margin-top: 30px;
-      padding: 10px 20px;
-      font-size: 1em;
+      margin-top: 20px;
+      padding: 12px 24px;
+      font-size: 1.1em;
       color: white;
       background-color: #ff3399;
       border: none;
-      border-radius: 10px;
+      border-radius: 12px;
       text-decoration: none;
     }
   </style>
@@ -41,42 +41,13 @@
   <h1>🎂 Happy Birthday, Babu Boy! 🎉</h1>
   <p>Wishing you all the joy, cake, and love today and everydayy! 💖</p>
 
-  <img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHBpbGJmYTEwYmlodGFkZXcydjh4b28zY2VkMDB1aWl3aGo2aWhxcCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/bOhO9oiplPTt6/giphy.gif" alt="Birthday GIF">
-
-  <br>
-  <a class="button" href="https://www.youtube.com/watch?v=wSGoUSwNb44" target="_blank">🎁 Click for a Surprise!</a>
-
-<!-- 🎁 Surprise Reveal Section -->
-<div style="margin-top: 30px;">
-  <span id="gift" style="font-size: 3em; cursor: pointer; animation: wiggle 1s infinite;">🎁</span>
-
-  <br><br>
-  <a id="gameButton" href="game.html" class="button" style="display: none;">
-    🧩 Play a Surprise Game
-  </a>
-</div>
-
-<script>
-  document.getElementById('gift').addEventListener('click', function () {
-    document.getElementById('gameButton').style.display = 'inline-block';
-    this.style.display = 'none';
-  });
-</script>
-
-<style>
-  @keyframes wiggle {
-    0% { transform: rotate(0deg); }
-    25% { transform: rotate(-5deg); }
-    50% { transform: rotate(5deg); }
-    75% { transform: rotate(-5deg); }
-    100% { transform: rotate(0deg); }
-  }
-</style>
-  
-</body>
-  <div style="margin-top: 40px; text-align: center;">
-  <a href="theme-selector.html" class="button" style="padding: 12px 24px; font-size: 1.1em; color: white; background-color: #ff3399; border-radius: 12px; text-decoration: none;">
+  <!-- Choose a Game Theme Button -->
+  <a href="theme-selector.html" class="button">
     🎮 Choose a Game Theme
   </a>
-</div
+
+  <!-- Bigger GIF -->
+  <img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHBpbGJmYTEwYmlodGFkZXcydjh4b28zY2VkMDB1aWl3aGo2aWhxcCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/bOhO9oiplPTt6/giphy.gif" alt="Birthday GIF">
+
+</body>
 </html>
