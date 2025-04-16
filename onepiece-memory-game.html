@@ -10,6 +10,7 @@
       font-family: 'Comic Sans MS', cursive;
       text-align: center;
       padding: 30px;
+      color: #333;
     }
     h1 {
       color: #2e8b57;
@@ -60,11 +61,16 @@
       border-radius: 10px;
       text-decoration: none;
     }
+    #zoro-gif {
+      display: none;
+      margin: 40px auto 0;
+      max-width: 300px;
+    }
   </style>
 </head>
 <body>
   <h1>⚔️ Help Zoro Find His Swords!</h1>
-  <p>Drag the correct swords into the box to return them to Zoro.</p>
+  <p id="instructions">Drag the correct swords into the box to return them to Zoro.</p>
 
   <div class="drop-zone" id="drop-zone">
     Drop Zoro's swords here
@@ -94,13 +100,18 @@
   </div>
 
   <div id="win-message">Zoro is ready to fight again! 💪🏽☠️</div>
-  <img id="zoro-gif" src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExN3BnNmV0YmxkcGtydjVrd3BnMHQ1Z2ZjZDd6ZjFpanpoc2lrdHh0OCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/4OV1bLOIWwIXRxpXlN/giphy.gif" alt="Zoro Celebrating" style="display: none; margin-top: 20px; max-width: 250px;" />
+  <img id="zoro-gif" src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExN3BnNmV0YmxkcGtydjVrd3BnMHQ1Z2ZjZDd6ZjFpanpoc2lrdHh0OCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/4OV1bLOIWwIXRxpXlN/giphy.gif" alt="Zoro Celebrating" />
+
+  <br />
   <a class="back-link" href="index.html">⬅️ Back to Birthday</a>
   <a class="back-link" href="theme-selector.html">🎮 Choose Another Game</a>
 
   <script>
     const dropZone = document.getElementById('drop-zone');
     const winMessage = document.getElementById('win-message');
+    const gif = document.getElementById("zoro-gif");
+    const swordsContainer = document.getElementById("swords-container");
+    const instructions = document.getElementById("instructions");
     const zoroSwords = ['wado', 'enma', 'sandai'];
     let foundSwords = [];
 
@@ -112,16 +123,16 @@
 
     dropZone.addEventListener('dragover', (e) => {
       e.preventDefault();
-      dropZone.style.backgroundColor = '#e0ffe0';
+      dropZone.style.backgroundColor = '#dfffdc';
     });
 
     dropZone.addEventListener('dragleave', () => {
-      dropZone.style.backgroundColor = '#fff';
+      dropZone.style.backgroundColor = 'rgba(255, 255, 255, 0.8)';
     });
 
     dropZone.addEventListener('drop', (e) => {
       e.preventDefault();
-      dropZone.style.backgroundColor = '#fff';
+      dropZone.style.backgroundColor = 'rgba(255, 255, 255, 0.8)';
       const swordId = e.dataTransfer.getData('text/plain');
       if (zoroSwords.includes(swordId) && !foundSwords.includes(swordId)) {
         foundSwords.push(swordId);
@@ -129,7 +140,12 @@
       }
       if (foundSwords.length === 3) {
         winMessage.style.display = 'block';
-        document.getElementById("zoro-gif").style.display = "block";
+        gif.style.display = 'block';
+        gif.style.margin = '40px auto 0';
+        gif.style.maxWidth = '300px';
+        dropZone.style.display = 'none';
+        swordsContainer.style.display = 'none';
+        instructions.style.display = 'none';
       }
     });
   </script>
