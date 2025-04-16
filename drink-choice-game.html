@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Choose Your Drink</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', cursive;
+      text-align: center;
+      background: linear-gradient(to top right, #e0f7fa, #fff3e0);
+      padding: 50px;
+    }
+    h1 {
+      color: #00796b;
+      font-size: 2.5em;
+    }
+    p {
+      font-size: 1.2em;
+      margin-bottom: 30px;
+      color: #444;
+    }
+    .drink-button {
+      padding: 20px 40px;
+      margin: 20px;
+      font-size: 1.3em;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.3s ease;
+    }
+    .drink-button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    }
+    .diet { background-color: #ffcc80; color: #5d4037; }
+    .normal { background-color: #ef9a9a; color: #b71c1c; }
+    .water { background-color: #a5d6a7; color: #1b5e20; }
+    #result {
+      margin-top: 40px;
+      font-size: 1.6em;
+      color: #00796b;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .result-gif {
+      width: 240px;
+      max-width: 80%;
+      margin: 20px auto;
+      border-radius: 10px;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <h1>🥤 Choose Your Drink!</h1>
+  <p>Only one of these will quench your thirst the healthy way. Pick wisely!</p>
+
+  <button class="drink-button diet" onclick="chooseDrink('diet')">🥤 Diet Coke</button>
+  <button class="drink-button normal" onclick="chooseDrink('normal')">🧃 Coca-Cola</button>
+  <button class="drink-button water" onclick="chooseDrink('water')">💧 Water</button>
+
+  <div id="result"></div>
+
+  <script>
+    function chooseDrink(choice) {
+      const result = document.getElementById('result');
+      if (choice === 'water') {
+        result.innerHTML = `
+          <img class="result-gif" src="https://media.giphy.com/media/xvnr5itPubNl9NuAsf/giphy.gif" alt="Water Win GIF" />
+          <strong>You chose wisely! Stay hydrated and fabulous! 💙</strong>
+        `;
+      } else if (choice === 'diet') {
+        result.innerHTML = `
+          <img class="result-gif" src="https://media.giphy.com/media/3oeHLk8GATiWZGUUTe/giphy.gif" alt="Diet Coke Fail GIF" />
+          <strong>Yikes! Diet Coke isn’t it... Try again! 💧</strong>
+        `;
+      } else {
+        result.innerHTML = `
+          <img class="result-gif" src="https://media.giphy.com/media/Coj2doAxM37l6/giphy.gif" alt="Coke Fail GIF" />
+          <strong>Classic mistake... Water is the MVP! 💧</strong>
+        `;
+      }
+    }
+  </script>
+</body>
+</html>
