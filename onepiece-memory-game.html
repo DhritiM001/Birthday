@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>One Piece Wanted Match</title>
+  <style>
+    body {
+      background-color: #fffaf0;
+      font-family: 'Comic Sans MS', cursive;
+      text-align: center;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      color: #d2691e;
+    }
+    .game-board {
+      display: grid;
+      grid-template-columns: repeat(4, 100px);
+      gap: 15px;
+      justify-content: center;
+      margin-top: 30px;
+    }
+    .card {
+      width: 100px;
+      height: 100px;
+      border: 2px solid #d2691e;
+      border-radius: 10px;
+      background-color: #fff;
+      background-size: cover;
+      background-position: center;
+      cursor: pointer;
+    }
+    #win-container {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    #win-message {
+      font-size: 1.5em;
+      color: #d2691e;
+      margin-bottom: 15px;
+    }
+    .win-gif {
+      width: 300px;
+      border-radius: 20px;
+    }
+    .back-link {
+      display: inline-block;
+      margin-top: 30px;
+      padding: 10px 20px;
+      font-size: 1em;
+      color: white;
+      background-color: #d2691e;
+      border-radius: 10px;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>🏴‍☠️ One Piece Wanted Match 🃏</h1>
+  <div class="game-board" id="board"></div>
+
+  <div id="win-container">
+    <div id="win-message">You matched all the Wanted Posters! 🏆</div>
+    <img class="win-gif" src="https://media.giphy.com/media/3ov9k5p1zv7K2kJUXe/giphy.gif" alt="One Piece Victory GIF">
+  </div>
+
+  <a class="back-link" href="index.html">⬅️ Back to Birthday</a>
+
+  <script>
+    const images = [
+      'https://upload.wikimedia.org/wikipedia/en/4/4c/Luffy_Mugshot.png',
+      'https://upload.wikimedia.org/wikipedia/en/3/3d/Roronoa_Zoro.jpg',
+      'https://upload.wikimedia.org/wikipedia/en/0/03/Nami_Infobox.png',
+      'https://upload.wikimedia.org/wikipedia/en/0/0a/Usopp.png',
+      'https://upload.wikimedia.org/wikipedia/en/d/d4/Sanji_One_Piece.png',
+      'https://upload.wikimedia.org/wikipedia/en/0/01/TonyTonyChopperPostTimeskip.png',
+      'https://upload.wikimedia.org/wikipedia/en/1/15/Nico_Robin.png',
+      'https://upload.wikimedia.org/wikipedia/en/8/87/Franky.png'
+    ];
+
+    let cards = [...images, ...images];
+    cards.sort(() => 0.5 - Math.random());
+
+    const board = document.getElementById('board');
+    const winContainer = document.getElementById('win-container');
+    let flipped = [];
+    let matched = 0;
+
+    function createCard(image, index) {
+      const card = document.createElement('div');
+      card.classList.add('card');
+      card.dataset.image = image;
+      card.dataset.index = index;
+      card.style.backgroundImage = "url('https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/One_Piece_Logo.svg/2560px-One_Piece_Logo.svg.png')";
+      card.addEventListener('click', () => flipCard(card));
+      board.appendChild(card);
+    }
+
+    function flipCard(card) {
+      if (card.classList.contains('flipped') || flipped.length === 2) return;
+      card.style.backgroundImage = `url('${card.dataset.image}')`;
+      card.classList.add('flipped');
+      flipped.push(card);
+
+      if (flipped.length === 2) {
+        setTimeout(checkMatch, 800);
+      }
+    }
+
+    function checkMatch() {
+      const [card1, card2] = flipped;
+      if (card1.dataset.image === card2.dataset.image) {
+        matched += 2;
+        if (matched === cards.length) {
+          board.style.display = 'none';
+          winContainer.style.display = 'flex';
+        }
+      } else {
+        card1.style.backgroundImage = "url('https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/One_Piece_Logo.svg/2560px-One_Piece_Logo.svg.png')";
+        card2.style.backgroundImage = "url('https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/One_Piece_Logo.svg/2560px-One_Piece_Logo.svg.png')";
+        card1.classList.remove('flipped');
+        card2.classList.remove('flipped');
+      }
+      flipped = [];
+    }
+
+    cards.forEach((image, index) => createCard(image, index));
+  </script>
+</body>
+</html>
