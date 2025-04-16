@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Groom the Cat</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', cursive;
+      background-color: #fff0f5;
+      text-align: center;
+      padding: 40px;
+    }
+    h1 {
+      color: #c2185b;
+    }
+    .cat-container {
+      position: relative;
+      display: inline-block;
+      margin-top: 20px;
+    }
+    #cat {
+      width: 250px;
+      border-radius: 15px;
+    }
+    .tool {
+      width: 60px;
+      margin: 10px;
+      cursor: grab;
+    }
+    #tools {
+      margin-top: 30px;
+    }
+    #done-msg {
+      display: none;
+      margin-top: 20px;
+      font-size: 1.4em;
+      color: #4a148c;
+    }
+    #celebration-gif {
+      display: none;
+      width: 250px;
+      height: auto;
+      margin-top: 20px;
+      border-radius: 10px;
+    }
+    #celebration-container {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🧼 Groom the Cat! 😺</h1>
+  <p>Drag the grooming tools onto the cat in the right order: Shampoo 🧴, Brush 🪥, Towel 🧼</p>
+
+  <div class="cat-container" id="cat-container" ondragover="event.preventDefault()" ondrop="dropTool(event)">
+    <img src="https://cdn-icons-png.flaticon.com/512/1818/1818405.png" id="cat" alt="Cat">
+  </div>
+
+  <div id="tools">
+    <img src="https://cdn-icons-png.flaticon.com/512/1521/1521237.png" class="tool" draggable="true" id="shampoo" ondragstart="dragTool(event)">
+    <img src="https://cdn-icons-png.flaticon.com/512/1967/1967925.png" class="tool" draggable="true" id="brush" ondragstart="dragTool(event)">
+    <img src="https://cdn-icons-png.flaticon.com/512/6966/6966749.png" class="tool" draggable="true" id="towel" ondragstart="dragTool(event)">
+  </div>
+
+  <button onclick="showGroomingResult()" style="margin-top: 30px; padding: 10px 20px; font-size: 1em; border: none; border-radius: 10px; background-color: #c2185b; color: white; cursor: pointer;">I'm Done!</button>
+
+  <div id="celebration-container">
+    <div id="done-msg">Your cat is sparkling clean! ✨🐱</div>
+    <img id="celebration-gif" src="https://media.giphy.com/media/1OrIIOIcRTDaNidc5p/giphy.gif" alt="Spinning Cat Celebration GIF">
+  </div>
+
+  <script>
+    document.getElementById("cat-container").innerHTML = '<img src="https://cdn-icons-png.flaticon.com/512/1818/1818405.png" id="cat" alt="Cat">';
+    document.getElementById("tools").style.display = 'block';
+    document.getElementById("cat-container").style.display = 'inline-block';
+    document.getElementById("celebration-container").style.display = 'none';
+    document.getElementById("done-msg").style.display = 'none';
+    document.getElementById("celebration-gif").style.display = 'none';
+
+    let groomingSteps = [];
+    const correctOrder = ['shampoo', 'brush', 'towel'];
+
+    function dragTool(event) {
+      event.dataTransfer.setData("text", event.target.id);
+    }
+
+    function dropTool(event) {
+      event.preventDefault();
+      const toolId = event.dataTransfer.getData("text");
+      if (!groomingSteps.includes(toolId)) {
+        groomingSteps.push(toolId);
+      }
+      const tool = document.getElementById(toolId).cloneNode(true);
+      tool.style.position = 'absolute';
+      tool.style.left = (event.offsetX - 30) + 'px';
+      tool.style.top = (event.offsetY - 30) + 'px';
+      tool.style.cursor = 'default';
+      tool.setAttribute('draggable', 'false');
+      document.getElementById("cat-container").appendChild(tool);
+    }
+
+    function showGroomingResult() {
+      document.getElementById("tools").style.display = 'none';
+      document.getElementById("cat-container").style.display = 'none';
+      document.getElementById("celebration-container").style.display = 'flex';
+      document.getElementById("done-msg").style.display = 'block';
+      document.getElementById("celebration-gif").style.display = 'block';
+
+      if (JSON.stringify(groomingSteps) === JSON.stringify(correctOrder)) {
+        document.getElementById("done-msg").textContent = "Your cat is sparkling clean! ✨🐱";
+        document.getElementById("celebration-container").innerHTML = `
+          <div id="done-msg">Your cat is sparkling clean! ✨🐱</div>
+          <img id="cat" src="https://cdn-icons-png.flaticon.com/512/12482/12482761.png" alt="Clean Cat" style="width: 250px; margin-top: 20px;" />
+          <img id="celebration-gif" src="https://media.giphy.com/media/1OrIIOIcRTDaNidc5p/giphy.gif" alt="Spinning Cat Celebration GIF" style="width: 250px; margin-top: 10px; border-radius: 10px;" />`;
+      } else {
+        document.getElementById("done-msg").textContent = "Oops! You missed the order, but your cat still loves you 😽";
+      }
+    }
+  </script>
+</body>
+</html>
