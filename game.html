@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Click the Hearts</title>
   <style>
     body {
@@ -53,7 +53,7 @@
       color: white;
       background-color: #ff3399;
       padding: 10px 20px;
-      border-radius: 10px; 
+      border-radius: 10px;
       z-index: 9999;
     }
   </style>
@@ -63,8 +63,11 @@
   <div id="score">Score: 0</div>
   <div id="timer">Time: 30s</div>
   <div id="message"></div>
-  <a class="back-link" href="index.html">⬅️ Back to Birthday</a>
-  <a class="back-link" href="theme-selector.html">🎮 Choose Another Game</a>
+
+  <!-- Button Left -->
+  <a class="back-link" href="index.html" style="left: 20px;">⬅️ Back to Birthday</a>
+  <!-- Button Right -->
+  <a class="back-link" href="theme-selector.html" style="right: 20px; left: auto; background-color: #ff66cc;">🎮 Choose Another Game</a>
 
   <script>
     let score = 0;
@@ -84,6 +87,7 @@
       heart.style.left = Math.random() * 95 + 'vw';
       heart.style.animationDuration = (Math.random() * 2 + 10) + 's';
       heart.style.top = '-30px';
+
       heart.addEventListener('click', () => {
         score++;
         scoreDisplay.textContent = 'Score: ' + score;
@@ -106,7 +110,9 @@
         clearInterval(timer);
         clearInterval(heartInterval);
         gameActive = false;
-        message.textContent = score > 10 ? `Look at you catching my hearts like you did in 2021! Hehehehe 💘 Score: ${score}` : `You caught ${score} hearts 💕`;
+        message.textContent = score > 10
+          ? `Look at you catching my hearts like you did in 2021! Hehehehe 💘 Score: ${score}`
+          : `You caught ${score} hearts 💕`;
         message.style.display = 'block';
       }
     }, 1000);
