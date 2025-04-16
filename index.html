@@ -46,5 +46,32 @@
   <br>
   <a class="button" href="https://www.youtube.com/watch?v=wSGoUSwNb44" target="_blank">🎁 Click for a Surprise!</a>
 
+<!-- 🎁 Surprise Reveal Section -->
+<div style="margin-top: 30px;">
+  <span id="gift" style="font-size: 3em; cursor: pointer; animation: wiggle 1s infinite;">🎁</span>
+
+  <br><br>
+  <a id="gameButton" href="game.html" class="button" style="display: none;">
+    🧩 Play a Surprise Game
+  </a>
+</div>
+
+<script>
+  document.getElementById('gift').addEventListener('click', function () {
+    document.getElementById('gameButton').style.display = 'inline-block';
+    this.style.display = 'none';
+  });
+</script>
+
+<style>
+  @keyframes wiggle {
+    0% { transform: rotate(0deg); }
+    25% { transform: rotate(-5deg); }
+    50% { transform: rotate(5deg); }
+    75% { transform: rotate(-5deg); }
+    100% { transform: rotate(0deg); }
+  }
+</style>
+  
 </body>
 </html>
