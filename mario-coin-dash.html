@@ -173,6 +173,11 @@ const ctx = canvas.getContext("2d");
       drawGoomba();
 
       if (gameWon) {
+        const winGif = new Image();
+        winGif.src = "https://giphy.com/gifs/dancing-nintendo-mario-atQF1zaSGq8s8";
+        winGif.onload = () => {
+          ctx.drawImage(winGif, canvas.width / 2 - 100, canvas.height / 2 - 100, 200, 200);
+        };
         ctx.fillStyle = "#2ecc71";
         ctx.font = "30px Comic Sans MS";
         ctx.fillText("🎉 You reached the flag!", 250, 200);
@@ -202,5 +207,9 @@ const ctx = canvas.getContext("2d");
 
     update();
   </script>
+  <div style="position: fixed; top: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px;">
+    <a href="index.html" style="text-decoration: none; color: white; background-color: #ff3399; padding: 6px 12px; border-radius: 8px; font-size: 12px; font-family: 'Comic Sans MS', cursive;">⬅️ Back to Birthday</a>
+    <a href="theme-selector.html" style="text-decoration: none; color: white; background-color: #ff3399; padding: 6px 12px; border-radius: 8px; font-size: 12px; font-family: 'Comic Sans MS', cursive;">🎮 Choose Another Game</a>
+  </div>
 </body>
 </html>
