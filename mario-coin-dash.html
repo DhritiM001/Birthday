@@ -20,9 +20,9 @@
   <canvas id="gameCanvas"></canvas>
   <script>
     const canvas = document.getElementById("gameCanvas");
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const ctx = canvas.getContext("2d");
 
     const mario = new Image();
     mario.src = "/mnt/data/daf5b279-d673-45cd-869f-e58ce507728f.png";
@@ -155,6 +155,16 @@ const ctx = canvas.getContext("2d");
           winSound.play();
           winPlayed = true;
         }
+        const gif = document.createElement("img");
+        gif.src = "https://media.giphy.com/media/atQF1zaSGq8s8/giphy.gif";
+        gif.alt = "Mario Celebrating";
+        gif.style.position = "fixed";
+        gif.style.top = "calc(40% + 80px)";
+        gif.style.left = "50%";
+        gif.style.transform = "translate(-50%, -50%)";
+        gif.style.width = "250px";
+        gif.style.zIndex = "999";
+        document.body.appendChild(gif);
       }
 
       // Collision with Goomba
@@ -173,11 +183,6 @@ const ctx = canvas.getContext("2d");
       drawGoomba();
 
       if (gameWon) {
-        const winGif = new Image();
-        winGif.src = "https://giphy.com/gifs/dancing-nintendo-mario-atQF1zaSGq8s8";
-        winGif.onload = () => {
-          ctx.drawImage(winGif, canvas.width / 2 - 100, canvas.height / 2 - 100, 200, 200);
-        };
         ctx.fillStyle = "#2ecc71";
         ctx.font = "30px Comic Sans MS";
         ctx.fillText("🎉 You reached the flag!", 250, 200);
