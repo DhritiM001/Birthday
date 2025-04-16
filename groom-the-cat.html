@@ -50,6 +50,23 @@
       align-items: center;
       margin-top: 20px;
     }
+    .back-buttons {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 9999;
+    }
+    .back-buttons a {
+      text-decoration: none;
+      color: white;
+      background-color: #c2185b;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 14px;
+    }
   </style>
 </head>
 <body>
@@ -71,6 +88,11 @@
   <div id="celebration-container">
     <div id="done-msg">Your cat is sparkling clean! ✨🐱</div>
     <img id="celebration-gif" src="https://media.giphy.com/media/1OrIIOIcRTDaNidc5p/giphy.gif" alt="Spinning Cat Celebration GIF">
+  </div>
+
+  <div class="back-buttons">
+    <a href="index.html">⬅️ Back to Birthday</a>
+    <a href="theme-selector.html">🎮 Choose Another Game</a>
   </div>
 
   <script>
