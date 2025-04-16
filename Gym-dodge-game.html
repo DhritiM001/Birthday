@@ -27,6 +27,25 @@
       font-size: 1.2em;
       color: #333;
     }
+    #endGifContainer {
+      display: none;
+      position: relative;
+      margin: 0 auto;
+    }
+    #endGif {
+      max-width: 320px;
+      border-radius: 12px;
+    }
+    #gameOverText {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      font-size: 24px;
+      font-family: 'Comic Sans MS', cursive;
+      text-shadow: 2px 2px 4px #000;
+    }
     .back-link {
       display: inline-block;
       margin-top: 20px;
@@ -43,7 +62,11 @@
   <h1>💥 Dodge the Dumbbells!</h1>
   <p>Use ⬅️ and ➡️ keys to dodge falling weights!</p>
   <div id="scoreDisplay">Score: 0</div>
-  <canvas id="gameCanvas" width="400" height="500"></canvas>
+  <div id="endGifContainer">
+    <img id="endGif" src="https://media.giphy.com/media/3oriNZNU6VDrDxM7sI/giphy.gif" alt="Gym Celebration" />
+    <div id="gameOverText">Game Over 💀</div>
+  </div>
+  <canvas id="gameCanvas" width="400" height="350"></canvas>
   <a class="back-link" href="index.html">⬅️ Back to Birthday</a>
   <a class="back-link" href="theme-selector.html">🎮 Choose Another Game</a>
 
@@ -51,8 +74,9 @@
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
     const scoreDisplay = document.getElementById('scoreDisplay');
+    const endGifContainer = document.getElementById('endGifContainer');
 
-    const player = { x: 180, y: 460, width: 40, height: 20, speed: 20 };
+    const player = { x: 180, y: 310, width: 40, height: 20, speed: 20 };
     let dumbbells = [];
     let score = 0;
     let gameOver = false;
@@ -85,9 +109,8 @@
 
     function gameLoop() {
       if (gameOver) {
-        ctx.fillStyle = '#e60000';
-        ctx.font = '24px Comic Sans MS';
-        ctx.fillText('Game Over 💀', 130, 250);
+        canvas.style.display = 'none';
+        endGifContainer.style.display = 'block';
         return;
       }
 
