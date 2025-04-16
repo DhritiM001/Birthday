@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Click the Hearts</title>
   <style>
     body {
@@ -46,6 +46,11 @@
       color: #ff3399;
       display: none;
     }
+    #love-gif {
+      display: none;
+      margin-top: 20px;
+      max-width: 300px;
+    }
     .back-link {
       position: fixed;
       bottom: 20px;
@@ -63,6 +68,7 @@
   <div id="score">Score: 0</div>
   <div id="timer">Time: 30s</div>
   <div id="message"></div>
+  <img id="love-gif" src="https://giphy.com/gifs/ATITalents-love-bear-milk-wPnbkEcr2tXiTN0Lmq" alt="Love Celebration" />
 
   <!-- Button Left -->
   <a class="back-link" href="index.html" style="left: 20px;">⬅️ Back to Birthday</a>
@@ -77,6 +83,7 @@
     const scoreDisplay = document.getElementById('score');
     const timerDisplay = document.getElementById('timer');
     const message = document.getElementById('message');
+    const gif = document.getElementById('love-gif');
 
     function createHeart() {
       if (!gameActive) return;
@@ -114,6 +121,7 @@
           ? `Look at you catching my hearts like you did in 2021! Hehehehe 💘 Score: ${score}`
           : `You caught ${score} hearts 💕`;
         message.style.display = 'block';
+        gif.style.display = 'block';
       }
     }, 1000);
   </script>
