@@ -17,10 +17,12 @@
   </style>
 </head>
 <body>
-  <canvas id="gameCanvas" width="800" height="400"></canvas>
+  <canvas id="gameCanvas"></canvas>
   <script>
     const canvas = document.getElementById("gameCanvas");
-    const ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+const ctx = canvas.getContext("2d");
 
     const mario = new Image();
     mario.src = "/mnt/data/daf5b279-d673-45cd-869f-e58ce507728f.png";
@@ -29,7 +31,7 @@
     flag.src = "/mnt/data/6d008c38-6e56-4e65-bea2-97d1647ca23e.png";
 
     let gravity = 0.8;
-    let ground = canvas.height - 40;
+    let ground = window.innerHeight - 40;
     let score = 0;
     let gameWon = false;
 
