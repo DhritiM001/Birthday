@@ -3,50 +3,41 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>One Piece Wanted Match</title>
+  <title>Zoro's Swords</title>
   <style>
     body {
-      background-color: #fffaf0;
+      background-color: #f4f4f4;
       font-family: 'Comic Sans MS', cursive;
       text-align: center;
-      margin: 0;
-      padding: 20px;
+      padding: 30px;
     }
     h1 {
-      color: #d2691e;
+      color: #2e8b57;
     }
-    .game-board {
-      display: grid;
-      grid-template-columns: repeat(4, 100px);
-      gap: 15px;
-      justify-content: center;
-      margin-top: 30px;
-    }
-    .card {
-      width: 100px;
-      height: 100px;
-      border: 2px solid #d2691e;
-      border-radius: 10px;
+    .drop-zone {
+      margin: 20px auto;
+      padding: 20px;
+      width: 300px;
+      border: 3px dashed #2e8b57;
+      border-radius: 15px;
       background-color: #fff;
-      background-size: cover;
-      background-position: center;
-      cursor: pointer;
     }
-    #win-container {
-      display: none;
-      flex-direction: column;
-      align-items: center;
+    .sword {
+      width: 100px;
+      margin: 10px;
+      cursor: grab;
+    }
+    #swords-container {
+      display: flex;
+      flex-wrap: wrap;
       justify-content: center;
       margin-top: 20px;
     }
     #win-message {
-      font-size: 1.5em;
-      color: #d2691e;
-      margin-bottom: 15px;
-    }
-    .win-gif {
-      width: 300px;
-      border-radius: 20px;
+      display: none;
+      margin-top: 30px;
+      font-size: 1.4em;
+      color: #2e8b57;
     }
     .back-link {
       display: inline-block;
@@ -54,82 +45,64 @@
       padding: 10px 20px;
       font-size: 1em;
       color: white;
-      background-color: #d2691e;
+      background-color: #2e8b57;
       border-radius: 10px;
       text-decoration: none;
     }
   </style>
 </head>
 <body>
-  <h1>🏴‍☠️ One Piece Wanted Match 🃏</h1>
-  <div class="game-board" id="board"></div>
+  <h1>⚔️ Help Zoro Find His Swords!</h1>
+  <p>Drag the correct swords into the box to return them to Zoro.</p>
 
-  <div id="win-container">
-    <div id="win-message">You matched all the Wanted Posters! 🏆</div>
-    <img class="win-gif" src="https://media.giphy.com/media/3ov9k5p1zv7K2kJUXe/giphy.gif" alt="One Piece Victory GIF">
+  <div class="drop-zone" id="drop-zone">
+    Drop Zoro's swords here
   </div>
 
+  <div id="swords-container">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Sword_font_awesome.svg/1200px-Sword_font_awesome.svg.png" class="sword" draggable="true" id="wado">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Sword_font_awesome.svg/1200px-Sword_font_awesome.svg.png" class="sword" draggable="true" id="enma">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Sword_font_awesome.svg/1200px-Sword_font_awesome.svg.png" class="sword" draggable="true" id="sandai">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Sword_font_awesome.svg/1200px-Sword_font_awesome.svg.png" class="sword" draggable="true" id="fake1">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/33/Sword_font_awesome.svg/1200px-Sword_font_awesome.svg.png" class="sword" draggable="true" id="fake2">
+  </div>
+
+  <div id="win-message">Zoro is ready to fight again! 💪🏽☠️</div>
   <a class="back-link" href="index.html">⬅️ Back to Birthday</a>
 
   <script>
-    const images = [
-      'https://upload.wikimedia.org/wikipedia/en/4/4c/Luffy_Mugshot.png',
-      'https://upload.wikimedia.org/wikipedia/en/3/3d/Roronoa_Zoro.jpg',
-      'https://upload.wikimedia.org/wikipedia/en/0/03/Nami_Infobox.png',
-      'https://upload.wikimedia.org/wikipedia/en/0/0a/Usopp.png',
-      'https://upload.wikimedia.org/wikipedia/en/d/d4/Sanji_One_Piece.png',
-      'https://upload.wikimedia.org/wikipedia/en/0/01/TonyTonyChopperPostTimeskip.png',
-      'https://upload.wikimedia.org/wikipedia/en/1/15/Nico_Robin.png',
-      'https://upload.wikimedia.org/wikipedia/en/8/87/Franky.png'
-    ];
+    const dropZone = document.getElementById('drop-zone');
+    const winMessage = document.getElementById('win-message');
+    const zoroSwords = ['wado', 'enma', 'sandai'];
+    let foundSwords = [];
 
-    let cards = [...images, ...images];
-    cards.sort(() => 0.5 - Math.random());
+    document.querySelectorAll('.sword').forEach(sword => {
+      sword.addEventListener('dragstart', (e) => {
+        e.dataTransfer.setData('text/plain', sword.id);
+      });
+    });
 
-    const board = document.getElementById('board');
-    const winContainer = document.getElementById('win-container');
-    let flipped = [];
-    let matched = 0;
+    dropZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropZone.style.backgroundColor = '#e0ffe0';
+    });
 
-    function createCard(image, index) {
-      const card = document.createElement('div');
-      card.classList.add('card');
-      card.dataset.image = image;
-      card.dataset.index = index;
-      card.style.backgroundImage = "url('https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/One_Piece_Logo.svg/2560px-One_Piece_Logo.svg.png')";
-      card.addEventListener('click', () => flipCard(card));
-      board.appendChild(card);
-    }
+    dropZone.addEventListener('dragleave', () => {
+      dropZone.style.backgroundColor = '#fff';
+    });
 
-    function flipCard(card) {
-      if (card.classList.contains('flipped') || flipped.length === 2) return;
-      card.style.backgroundImage = `url('${card.dataset.image}')`;
-      card.classList.add('flipped');
-      flipped.push(card);
-
-      if (flipped.length === 2) {
-        setTimeout(checkMatch, 800);
+    dropZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropZone.style.backgroundColor = '#fff';
+      const swordId = e.dataTransfer.getData('text/plain');
+      if (zoroSwords.includes(swordId) && !foundSwords.includes(swordId)) {
+        foundSwords.push(swordId);
+        document.getElementById(swordId).style.display = 'none';
       }
-    }
-
-    function checkMatch() {
-      const [card1, card2] = flipped;
-      if (card1.dataset.image === card2.dataset.image) {
-        matched += 2;
-        if (matched === cards.length) {
-          board.style.display = 'none';
-          winContainer.style.display = 'flex';
-        }
-      } else {
-        card1.style.backgroundImage = "url('https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/One_Piece_Logo.svg/2560px-One_Piece_Logo.svg.png')";
-        card2.style.backgroundImage = "url('https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/One_Piece_Logo.svg/2560px-One_Piece_Logo.svg.png')";
-        card1.classList.remove('flipped');
-        card2.classList.remove('flipped');
+      if (foundSwords.length === 3) {
+        winMessage.style.display = 'block';
       }
-      flipped = [];
-    }
-
-    cards.forEach((image, index) => createCard(image, index));
+    });
   </script>
 </body>
 </html>
