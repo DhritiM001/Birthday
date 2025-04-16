@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Memory Heart Game</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', cursive;
+      background-color: #ffe6f0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    h1 {
+      color: #ff3399;
+    }
+    .game-board {
+      display: grid;
+      grid-template-columns: repeat(4, 80px);
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .card {
+      width: 80px;
+      height: 80px;
+      font-size: 2em;
+      background-color: #fff;
+      border: 2px solid #ff3399;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      user-select: none;
+    }
+    .card.flipped {
+      background-color: #ffccdd;
+    }
+    #win-message {
+      display: none;
+      margin-top: 30px;
+      font-size: 1.5em;
+      color: #ff3399;
+    }
+  </style>
+</head>
+<body>
+  <h1>💖 Memory Match: I Love You Edition 💖</h1>
+  <div class="game-board" id="board"></div>
+  <div id="win-message">I Love You ❤️</div>
+
+  <script>
+    const emojis = ['💌', '💝', '💖', '💘', '❤️', '💕', '💞', '💗'];
+    let cards = [...emojis, ...emojis];
+    cards.sort(() => 0.5 - Math.random());
+
+    const board = document.getElementById('board');
+    let flipped = [];
+    let matched = 0;
+
+    function createCard(emoji, index) {
+      const card = document.createElement('div');
+      card.classList.add('card');
+      card.dataset.emoji = emoji;
+      card.dataset.index = index;
+      card.addEventListener('click', () => flipCard(card));
+      board.appendChild(card);
+    }
+
+    function flipCard(card) {
+      if (card.classList.contains('flipped') || flipped.length === 2) return;
+
+      card.textContent = card.dataset.emoji;
+      card.classList.add('flipped');
+      flipped.push(card);
+
+      if (flipped.length === 2) {
+        setTimeout(checkMatch, 600);
+      }
+    }
+
+    function checkMatch() {
+      const [card1, card2] = flipped;
+      if (card1.dataset.emoji === card2.dataset.emoji) {
+        matched += 2;
+        if (matched === cards.length) {
+          document.getElementById('win-message').style.display = 'block';
+        }
+      } else {
+        card1.textContent = '';
+        card2.textContent = '';
+        card1.classList.remove('flipped');
+        card2.classList.remove('flipped');
+      }
+      flipped = [];
+    }
+
+    cards.forEach((emoji, index) => createCard(emoji, index));
+  </script>
+</body>
+</html>
