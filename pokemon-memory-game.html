@@ -42,6 +42,12 @@
       font-size: 1.5em;
       color: #ef5350;
     }
+    .win-gif {
+      display: none;
+      margin-top: 20px;
+      width: 300px;
+      border-radius: 20px;
+    }
     .back-link {
       display: inline-block;
       margin-top: 30px;
@@ -58,6 +64,7 @@
   <h1>✨ Pokémon Memory Match ✨</h1>
   <div class="game-board" id="board"></div>
   <div id="win-message">You matched all the Pokémon! 🎉</div>
+  <img id="pikachuWin" class="win-gif" src="https://media.giphy.com/media/U2nN0ridM4lXy/giphy.gif" alt="Excited Pikachu GIF">
   <a class="back-link" href="index.html">⬅️ Back to Birthday</a>
 
   <script>
@@ -106,6 +113,7 @@
         matched += 2;
         if (matched === cards.length) {
           document.getElementById('win-message').style.display = 'block';
+          document.getElementById('pikachuWin').style.display = 'block';
         }
       } else {
         card1.style.backgroundImage = "url('https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/International_Pokémon_logo.svg/640px-International_Pokémon_logo.svg.png')";
