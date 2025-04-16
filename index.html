@@ -2,30 +2,33 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Happy Birthday!</title>
   <style>
     body {
       background-color: #ffe6f0;
       font-family: 'Comic Sans MS', cursive;
-      text-align: center;
-      padding: 40px;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 40px 20px;
     }
     h1 {
       font-size: 3em;
       color: #ff3399;
+      margin-bottom: 10px;
     }
     p {
       font-size: 1.3em;
       color: #333;
-    }
-    img {
-      width: 450px;
-      margin-top: 20px;
-      border-radius: 20px;
+      margin-bottom: 30px;
+      max-width: 600px;
     }
     .button {
-      display: inline-block;
-      margin-top: 20px;
+      margin-bottom: 30px;
       padding: 12px 24px;
       font-size: 1.1em;
       color: white;
@@ -34,20 +37,20 @@
       border-radius: 12px;
       text-decoration: none;
     }
+    img {
+      width: 450px;
+      max-width: 100%;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
   </style>
 </head>
 <body>
-
   <h1>🎂 Happy Birthday, Babu Boy! 🎉</h1>
   <p>Wishing you all the joy, cake, and love today and everydayy! 💖</p>
 
-  <!-- Choose a Game Theme Button -->
-  <a href="theme-selector.html" class="button">
-    🎮 Choose a Game Theme
-  </a>
+  <a href="theme-selector.html" class="button">🎮 Choose a Game Theme</a>
 
-  <!-- Bigger GIF -->
-  <img src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExOHBpbGJmYTEwYmlodGFkZXcydjh4b28zY2VkMDB1aWl3aGo2aWhxcCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/bOhO9oiplPTt6/giphy.gif" alt="Birthday GIF">
-
+  <img src="https://media.tenor.com/mW1N6HtKQXMAAAAC/sanji-one-piece.gif" alt="Sanji Birthday GIF">
 </body>
 </html>
