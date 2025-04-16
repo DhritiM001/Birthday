@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mini Mario Adventure</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background-color: #87CEEB;
+    }
+    canvas {
+      display: block;
+      background: linear-gradient(#87CEEB, #ffffff);
+    }
+  </style>
+</head>
+<body>
+  <canvas id="gameCanvas" width="800" height="400"></canvas>
+  <script>
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
+
+    const mario = new Image();
+    mario.src = "/mnt/data/daf5b279-d673-45cd-869f-e58ce507728f.png";
+
+    const flag = new Image();
+    flag.src = "/mnt/data/6d008c38-6e56-4e65-bea2-97d1647ca23e.png";
+
+    let gravity = 0.8;
+    let ground = canvas.height - 40;
+    let score = 0;
+    let gameWon = false;
+
+    const player = {
+      x: 50,
+      y: ground - 50,
+      width: 40,
+      height: 50,
+      dy: 0,
+      dx: 0,
+      speed: 5,
+      jumping: false
+    };
+
+    const platforms = [
+      { x: 0, y: ground, width: canvas.width, height: 40 },
+      { x: 250, y: ground - 80, width: 80, height: 20 },
+      { x: 450, y: ground - 120, width: 80, height: 20 }
+    ];
+
+    const coinBlocks = [
+      { x: 270, y: ground - 110, width: 20, height: 20, collected: false },
+      { x: 470, y: ground - 150, width: 20, height: 20, collected: false }
+    ];
+
+    const goal = { x: 700, y: ground - 60, width: 40, height: 60 };
+
+    const keys = {};
+
+    const goomba = {
+      x: 350,
+      y: ground - 30,
+      width: 30,
+      height: 30,
+      dx: 1
+    };
+
+    const jumpSound = new Audio("https://www.soundjay.com/button/beep-07.wav");
+    jumpSound.volume = 0.4;
+
+    const winSound = new Audio("https://www.soundjay.com/human/cheering-01.mp3");
+    winSound.volume = 0.4;
+    let winPlayed = false;
+
+    function drawPlayer() {
+      if (mario.complete && mario.naturalWidth !== 0) {
+        ctx.drawImage(mario, player.x, player.y, player.width, player.height);
+      } else {
+        ctx.fillStyle = "red";
+        ctx.fillRect(player.x, player.y, player.width, player.height);
+      }
+    }
+
+    function drawPlatforms() {
+      ctx.fillStyle = "#228B22";
+      platforms.forEach(p => {
+        ctx.fillRect(p.x, p.y, p.width, p.height);
+      });
+    }
+
+    function drawCoinBlocks() {
+      ctx.fillStyle = "gold";
+      coinBlocks.forEach(b => {
+        if (!b.collected) ctx.fillRect(b.x, b.y, b.width, b.height);
+      });
+    }
+
+    function drawGoal() {
+      if (flag.complete && flag.naturalWidth !== 0) {
+        ctx.drawImage(flag, goal.x, goal.y, goal.width, goal.height);
+      } else {
+        ctx.fillStyle = "white";
+        ctx.fillRect(goal.x, goal.y, goal.width, goal.height);
+      }
+    }
+
+    function drawScore() {
+      ctx.fillStyle = "black";
+      ctx.font = "16px Comic Sans MS";
+      ctx.fillText("Score: " + score, 10, 20);
+    }
+
+    function update() {
+      // Move Goomba
+      goomba.x += goomba.dx;
+      if (goomba.x <= 300 || goomba.x + goomba.width >= 500) goomba.dx *= -1;
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Controls
+      if (keys["ArrowRight"]) player.dx = player.speed;
+      else if (keys["ArrowLeft"]) player.dx = -player.speed;
+      else player.dx = 0;
+
+      player.dy += gravity;
+      player.x += player.dx;
+      player.y += player.dy;
+
+      // Collisions
+      let onGround = false;
+      platforms.forEach(p => {
+        if (player.x < p.x + p.width && player.x + player.width > p.x && player.y + player.height >= p.y && player.y + player.height <= p.y + p.height + 10) {
+          player.y = p.y - player.height;
+          player.dy = 0;
+          onGround = true;
+        }
+      });
+
+      player.jumping = !onGround;
+
+      coinBlocks.forEach(block => {
+        if (!block.collected && player.x < block.x + block.width && player.x + player.width > block.x && player.y < block.y + block.height && player.y + player.height > block.y) {
+          block.collected = true;
+          score += 1;
+        }
+      });
+
+      if (!gameWon && player.x + player.width > goal.x && player.x < goal.x + goal.width && player.y + player.height > goal.y) {
+        gameWon = true;
+        if (!winPlayed) {
+          winSound.play();
+          winPlayed = true;
+        }
+      }
+
+      // Collision with Goomba
+      if (!gameWon && player.x < goomba.x + goomba.width && player.x + player.width > goomba.x && player.y + player.height > goomba.y && player.y < goomba.y + goomba.height) {
+        ctx.fillStyle = "#e74c3c";
+        ctx.font = "30px Comic Sans MS";
+        ctx.fillText("Game Over! 💀", 280, 200);
+        return;
+      }
+
+      drawPlatforms();
+      drawCoinBlocks();
+      drawGoal();
+      drawPlayer();
+      drawScore();
+      drawGoomba();
+
+      if (gameWon) {
+        ctx.fillStyle = "#2ecc71";
+        ctx.font = "30px Comic Sans MS";
+        ctx.fillText("🎉 You reached the flag!", 250, 200);
+      } else {
+        requestAnimationFrame(update);
+      }
+    }
+
+    document.addEventListener("keydown", (e) => {
+      keys[e.key] = true;
+      if (e.key === "ArrowUp" && !player.jumping) {
+        player.dy = -15;
+        player.jumping = true;
+        jumpSound.currentTime = 0;
+        jumpSound.play();
+      }
+    });
+
+    document.addEventListener("keyup", (e) => {
+      keys[e.key] = false;
+    });
+
+    function drawGoomba() {
+      ctx.fillStyle = "brown";
+      ctx.fillRect(goomba.x, goomba.y, goomba.width, goomba.height);
+    }
+
+    update();
+  </script>
+</body>
+</html>
