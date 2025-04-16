@@ -36,15 +36,19 @@
       content: '';
       display: block;
     }
-    #win-message {
+    #win-container {
       display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       margin-top: 20px;
+    }
+    #win-message {
       font-size: 1.5em;
       color: #ef5350;
+      margin-bottom: 15px;
     }
     .win-gif {
-      display: none;
-      margin-top: 20px;
       width: 300px;
       border-radius: 20px;
     }
@@ -63,26 +67,35 @@
 <body>
   <h1>✨ Pokémon Memory Match ✨</h1>
   <div class="game-board" id="board"></div>
-  <div id="win-message">You matched all the Pokémon! 🎉</div>
-  <img id="pikachuWin" class="win-gif" src="https://media.giphy.com/media/U2nN0ridM4lXy/giphy.gif" alt="Excited Pikachu GIF">
+
+  <div id="win-container">
+    <div id="win-message">You matched all the Pokémon! 🎉</div>
+    <img id="pikachuWin" class="win-gif" src="https://media.giphy.com/media/U2nN0ridM4lXy/giphy.gif" alt="Excited Pikachu GIF">
+  </div>
+
   <a class="back-link" href="index.html">⬅️ Back to Birthday</a>
 
+  <audio id="win-audio" src="https://cdn.pixabay.com/download/audio/2023/03/02/audio_bbe2c44c82.mp3?filename=magic-win-148125.mp3" preload="auto"></audio>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
   <script>
     const images = [
-      'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png', // Pikachu
-      'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png',  // Charmander
-      'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png',  // Bulbasaur
-      'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png',  // Squirtle
-      'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/39.png', // Jigglypuff
-      'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/133.png', // Eevee
-      'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/52.png', // Meowth
-      'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/143.png' // Snorlax
+      'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png',
+      'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png',
+      'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png',
+      'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png',
+      'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/39.png',
+      'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/133.png',
+      'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/52.png',
+      'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/143.png'
     ];
 
     let cards = [...images, ...images];
     cards.sort(() => 0.5 - Math.random());
 
     const board = document.getElementById('board');
+    const winContainer = document.getElementById('win-container');
+    const winAudio = document.getElementById('win-audio');
     let flipped = [];
     let matched = 0;
 
@@ -112,8 +125,14 @@
       if (card1.dataset.image === card2.dataset.image) {
         matched += 2;
         if (matched === cards.length) {
-          document.getElementById('win-message').style.display = 'block';
-          document.getElementById('pikachuWin').style.display = 'block';
+          board.style.display = 'none';
+          winContainer.style.display = 'flex';
+          winAudio.play();
+          confetti({
+            particleCount: 150,
+            spread: 100,
+            origin: { y: 0.6 }
+          });
         }
       } else {
         card1.style.backgroundImage = "url('https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/International_Pokémon_logo.svg/640px-International_Pokémon_logo.svg.png')";
