@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pop the Presents!</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: #e6fff5;
+      font-family: 'Comic Sans MS', cursive;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 20px;
+    }
+    h1 {
+      color: #33aa77;
+    }
+    #score, #timer {
+      font-size: 1.2em;
+      margin: 10px;
+      color: #33aa77;
+    }
+    .balloon {
+      position: absolute;
+      font-size: 2.5em;
+      cursor: pointer;
+      animation: floatUp linear;
+    }
+    @keyframes floatUp {
+      from {
+        transform: translateY(100vh);
+        opacity: 1;
+      }
+      to {
+        transform: translateY(-100px);
+        opacity: 0;
+      }
+    }
+    #message {
+      font-size: 1.5em;
+      margin-top: 20px;
+      color: #33aa77;
+      display: none;
+    }
+    .back-link {
+      position: fixed;
+      bottom: 20px;
+      text-decoration: none;
+      color: white;
+      background-color: #33aa77;
+      padding: 10px 20px;
+      border-radius: 10px;
+      z-index: 9999;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎁 Pop the Presents!</h1>
+  <div id="score">Score: 0</div>
+  <div id="timer">Time: 30s</div>
+  <div id="message"></div>
+
+  <a class="back-link" href="index.html">⬅️ Back to Birthday</a>
+  <a class="back-link" href="theme-selector.html" style="right: 20px; left: auto;">🎮 Choose Another Game</a>
+
+  <script>
+    let score = 0;
+    let timeLeft = 30;
+    let gameActive = true;
+
+    const scoreDisplay = document.getElementById('score');
+    const timerDisplay = document.getElementById('timer');
+    const message = document.getElementById('message');
+
+    function createBalloon() {
+      if (!gameActive) return;
+
+      const balloon = document.createElement('div');
+      balloon.className = 'balloon';
+      balloon.textContent = '🎈🎁';
+      balloon.style.left = Math.random() * 90 + 'vw';
+      balloon.style.animationDuration = (Math.random() * 3 + 4) + 's';
+      balloon.style.bottom = '-50px';
+
+      balloon.addEventListener('click', () => {
+        score++;
+        scoreDisplay.textContent = 'Score: ' + score;
+        balloon.remove();
+      });
+
+      document.body.appendChild(balloon);
+
+      setTimeout(() => {
+        balloon.remove();
+      }, 5000);
+    }
+
+    const balloonInterval = setInterval(createBalloon, 700);
+
+    const timer = setInterval(() => {
+      timeLeft--;
+      timerDisplay.textContent = 'Time: ' + timeLeft + 's';
+      if (timeLeft <= 0) {
+        clearInterval(timer);
+        clearInterval(balloonInterval);
+        gameActive = false;
+        message.textContent = score > 10
+          ? `You'd make Isabelle proud! 🎉 Score: ${score}`
+          : `A cozy try 🍃 You popped ${score} presents!`;
+        message.style.display = 'block';
+      }
+    }, 1000);
+  </script>
+</body>
+</html>
