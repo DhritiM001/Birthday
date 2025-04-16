@@ -31,17 +31,12 @@
       animation: floatUp linear forwards;
     }
     @keyframes floatUp {
-  0% {
-    bottom: -50px;
-    opacity: 1;
-  }
-  100% {
-    bottom: 100vh;
-    opacity: 0;
-  }
-}
-      to {
-        transform: translateY(-100px);
+      0% {
+        bottom: -50px;
+        opacity: 1;
+      }
+      100% {
+        bottom: 100vh;
         opacity: 0;
       }
     }
@@ -50,6 +45,11 @@
       margin-top: 20px;
       color: #33aa77;
       display: none;
+    }
+    #gif-success, #gif-fail {
+      display: none;
+      margin-top: 20px;
+      max-width: 300px;
     }
     .back-link {
       position: fixed;
@@ -64,10 +64,12 @@
   </style>
 </head>
 <body>
-  <h1>🎁 Pop the Presents!</h1>
+  <h1>🏱 Pop the Presents!</h1>
   <div id="score">Score: 0</div>
   <div id="timer">Time: 30s</div>
   <div id="message"></div>
+  <img id="gif-success" src="https://media.giphy.com/media/KFhv3T1seYSJuak8TN/giphy.gif" alt="Success Celebration" />
+  <img id="gif-fail" src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExempxY2ZoeG90dDlqZ2prZmJsOTQ2OXk0cXdqbG81MmY0ZHc1M3l3ZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/PQC1RSdnhpjJC/giphy.gif" alt="Try Again" />
 
   <a class="back-link" href="index.html" style="left: 20px;">⬅️ Back to Birthday</a>
   <a class="back-link" href="theme-selector.html" style="right: 20px; left: auto; background-color: #ff66cc;">🎮 Choose Another Game</a>
@@ -80,6 +82,8 @@
     const scoreDisplay = document.getElementById('score');
     const timerDisplay = document.getElementById('timer');
     const message = document.getElementById('message');
+    const gifSuccess = document.getElementById('gif-success');
+    const gifFail = document.getElementById('gif-fail');
 
     function createBalloon() {
       if (!gameActive) return;
@@ -113,9 +117,13 @@
         clearInterval(timer);
         clearInterval(balloonInterval);
         gameActive = false;
-        message.textContent = score > 10
-          ? `You'd make Isabelle proud! 🎉 Score: ${score}`
-          : `A cozy try 🍃 You popped ${score} presents!`;
+        if (score > 10) {
+          message.textContent = `You'd make Isabelle proud! 🎉 Score: ${score}`;
+          gifSuccess.style.display = 'block';
+        } else {
+          message.textContent = `A cozy try 🍃 You popped ${score} presents!`;
+          gifFail.style.display = 'block';
+        }
         message.style.display = 'block';
       }
     }, 1000);
