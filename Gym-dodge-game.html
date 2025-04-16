@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dodge the Dumbbells</title>
+  <style>
+    body {
+      background-color: #f0f8ff;
+      font-family: 'Comic Sans MS', cursive;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+    canvas {
+      background: #fff0f0;
+      display: block;
+      margin: 40px auto;
+      border: 4px solid #e60000;
+      border-radius: 12px;
+    }
+    h1 {
+      color: #e60000;
+      margin-top: 20px;
+    }
+    #scoreDisplay {
+      font-size: 1.2em;
+      color: #333;
+    }
+    .back-link {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 1em;
+      color: white;
+      background-color: #e60000;
+      border-radius: 10px;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body tabindex="0">
+  <h1>💥 Dodge the Dumbbells!</h1>
+  <p>Use ⬅️ and ➡️ keys to dodge falling weights!</p>
+  <div id="scoreDisplay">Score: 0</div>
+  <canvas id="gameCanvas" width="400" height="500"></canvas>
+  <a class="back-link" href="index.html">⬅️ Back to Birthday</a>
+  <a class="back-link" href="theme-selector.html">🎮 Choose Another Game</a>
+
+  <script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+    const scoreDisplay = document.getElementById('scoreDisplay');
+
+    const player = { x: 180, y: 460, width: 40, height: 20, speed: 20 };
+    let dumbbells = [];
+    let score = 0;
+    let gameOver = false;
+
+    function drawPlayer() {
+      ctx.fillStyle = '#333';
+      ctx.fillRect(player.x, player.y, player.width, player.height);
+    }
+
+    function drawDumbbells() {
+      ctx.fillStyle = '#e60000';
+      dumbbells.forEach(d => ctx.fillRect(d.x, d.y, d.size, d.size));
+    }
+
+    function updateDumbbells() {
+      dumbbells.forEach(d => d.y += d.speed);
+      dumbbells = dumbbells.filter(d => d.y < canvas.height);
+    }
+
+    function checkCollision() {
+      dumbbells.forEach(d => {
+        if (d.x < player.x + player.width &&
+            d.x + d.size > player.x &&
+            d.y < player.y + player.height &&
+            d.y + d.size > player.y) {
+          gameOver = true;
+        }
+      });
+    }
+
+    function gameLoop() {
+      if (gameOver) {
+        ctx.fillStyle = '#e60000';
+        ctx.font = '24px Comic Sans MS';
+        ctx.fillText('Game Over 💀', 130, 250);
+        return;
+      }
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawPlayer();
+      drawDumbbells();
+      updateDumbbells();
+      checkCollision();
+
+      score++;
+      scoreDisplay.textContent = `Score: ${score}`;
+
+      requestAnimationFrame(gameLoop);
+    }
+
+    document.body.focus();
+    document.body.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft' && player.x > 0) player.x -= player.speed;
+      if (e.key === 'ArrowRight' && player.x < canvas.width - player.width) player.x += player.speed;
+    });
+
+    setInterval(() => {
+      if (!gameOver) {
+        dumbbells.push({
+          x: Math.random() * (canvas.width - 30),
+          y: 0,
+          size: 30,
+          speed: 5 + Math.random() * 3
+        });
+      }
+    }, 800);
+
+    gameLoop();
+  </script>
+</body>
+</html>
