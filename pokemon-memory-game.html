@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pokémon Memory Match</title>
+  <style>
+    body {
+      background-color: #f0f8ff;
+      font-family: 'Comic Sans MS', cursive;
+      text-align: center;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      color: #ef5350;
+    }
+    .game-board {
+      display: grid;
+      grid-template-columns: repeat(4, 100px);
+      gap: 15px;
+      justify-content: center;
+      margin-top: 30px;
+    }
+    .card {
+      width: 100px;
+      height: 100px;
+      border: 2px solid #ef5350;
+      border-radius: 10px;
+      background-color: #fff;
+      background-size: cover;
+      background-position: center;
+      cursor: pointer;
+    }
+    .card.flipped::after {
+      content: '';
+      display: block;
+    }
+    #win-message {
+      display: none;
+      margin-top: 20px;
+      font-size: 1.5em;
+      color: #ef5350;
+    }
+    .back-link {
+      display: inline-block;
+      margin-top: 30px;
+      padding: 10px 20px;
+      font-size: 1em;
+      color: white;
+      background-color: #ef5350;
+      border-radius: 10px;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>✨ Pokémon Memory Match ✨</h1>
+  <div class="game-board" id="board"></div>
+  <div id="win-message">You matched all the Pokémon! 🎉</div>
+  <a class="back-link" href="index.html">⬅️ Back to Birthday</a>
+
+  <script>
+    const images = [
+      'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png', // Pikachu
+      'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png',  // Charmander
+      'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png',  // Bulbasaur
+      'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/7.png',  // Squirtle
+      'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/39.png', // Jigglypuff
+      'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/133.png', // Eevee
+      'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/52.png', // Meowth
+      'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/143.png' // Snorlax
+    ];
+
+    let cards = [...images, ...images];
+    cards.sort(() => 0.5 - Math.random());
+
+    const board = document.getElementById('board');
+    let flipped = [];
+    let matched = 0;
+
+    function createCard(image, index) {
+      const card = document.createElement('div');
+      card.classList.add('card');
+      card.dataset.image = image;
+      card.dataset.index = index;
+      card.style.backgroundImage = "url('https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/International_Pokémon_logo.svg/640px-International_Pokémon_logo.svg.png')";
+      card.addEventListener('click', () => flipCard(card));
+      board.appendChild(card);
+    }
+
+    function flipCard(card) {
+      if (card.classList.contains('flipped') || flipped.length === 2) return;
+      card.style.backgroundImage = `url('${card.dataset.image}')`;
+      card.classList.add('flipped');
+      flipped.push(card);
+
+      if (flipped.length === 2) {
+        setTimeout(checkMatch, 800);
+      }
+    }
+
+    function checkMatch() {
+      const [card1, card2] = flipped;
+      if (card1.dataset.image === card2.dataset.image) {
+        matched += 2;
+        if (matched === cards.length) {
+          document.getElementById('win-message').style.display = 'block';
+        }
+      } else {
+        card1.style.backgroundImage = "url('https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/International_Pokémon_logo.svg/640px-International_Pokémon_logo.svg.png')";
+        card2.style.backgroundImage = "url('https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/International_Pokémon_logo.svg/640px-International_Pokémon_logo.svg.png')";
+        card1.classList.remove('flipped');
+        card2.classList.remove('flipped');
+      }
+      flipped = [];
+    }
+
+    cards.forEach((image, index) => createCard(image, index));
+  </script>
+</body>
+</html>
