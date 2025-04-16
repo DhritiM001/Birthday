@@ -1,174 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Memory Heart Game</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Click the Hearts</title>
   <style>
     body {
-      font-family: 'Comic Sans MS', cursive;
+      margin: 0;
       background-color: #ffe6f0;
+      font-family: 'Comic Sans MS', cursive;
+      overflow: hidden;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      margin: 0;
-      min-height: 100vh;
-      overflow-x: hidden;
-      overflow-y: auto;
-}
+      justify-content: flex-start;
+      padding: 20px;
     }
     h1 {
       color: #ff3399;
     }
-    .game-board {
-      display: grid;
-      grid-template-columns: repeat(4, 80px);
-      gap: 10px;
-      margin-top: 20px;
-    }
-    .card {
-      width: 80px;
-      height: 80px;
-      font-size: 2em;
-      background-color: #fff;
-      border: 2px solid #ff3399;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      user-select: none;
-    }
-    .card.flipped {
-      background-color: #ffccdd;
-    }
-    #win-message {
-      display: none;
-      margin-top: 30px;
-      font-size: 1.5em;
+    #score, #timer {
+      font-size: 1.2em;
+      margin: 10px;
       color: #ff3399;
     }
-    .back-link {
-      margin-top: 30px;
-      padding: 10px 20px;
-      font-size: 1em;
-      color: white;
-      background-color: #ff3399;
-      border-radius: 10px;
-      text-decoration: none;
-    }
     .heart {
-      position: fixed;
-      bottom: -20px;
-      font-size: 24px;
-      animation: floatHeart 5s linear infinite;
-      opacity: 0.6;
+      position: absolute;
+      cursor: pointer;
+      font-size: 2em;
+      animation: fall linear infinite;
     }
-  </style>
-</head>
-<body>
-  <h1>💖 Memory Match: I Love You Edition 💖</h1>
-  <div class="game-board" id="board"></div>
-  <div id="win-message">I Love You ❤️</div>
-  <a class="back-link" href="index.html">⬅️ Back to Birthday</a>
-
-  <div style="margin-top: 30px; text-align: center;">
-    <button onclick="document.getElementById('secret').style.display='block'" class="button" style="padding: 10px 20px; font-size: 1em; color: white; background-color: #ff3399; border-radius: 10px; text-decoration: none;">💌 Read a Love Note</button>
-    <div id="secret" style="display:none; margin-top:20px; padding:20px; background:#fff0f5; border-radius:10px; color:#444; max-width: 300px;">
-      <h3>To You, On Your Special Day 💖</h3>
-      <p>You are more than words, more than wishes. You are warmth, joy, and home. This website is just a little spark of how much you’re loved 🥰</p>
-    </div>
-  </div>
-
-  <script>
-    const emojis = ['💌', '💝', '💖', '💘', '❤️', '💕', '💞', '💗'];
-    let cards = [...emojis, ...emojis];
-    cards.sort(() => 0.5 - Math.random());
-
-    const board = document.getElementById('board');
-    let flipped = [];
-    let matched = 0;
-
-    function createCard(emoji, index) {
-      const card = document.createElement('div');
-      card.classList.add('card');
-      card.dataset.emoji = emoji;
-      card.dataset.index = index;
-      card.addEventListener('click', () => flipCard(card));
-      board.appendChild(card);
-    }
-
-    function flipCard(card) {
-      if (card.classList.contains('flipped') || flipped.length === 2) return;
-
-      card.textContent = card.dataset.emoji;
-      card.classList.add('flipped');
-      flipped.push(card);
-
-      if (flipped.length === 2) {
-        setTimeout(checkMatch, 600);
-      }
-    }
-
-    function checkMatch() {
-      const [card1, card2] = flipped;
-      if (card1.dataset.emoji === card2.dataset.emoji) {
-        matched += 2;
-        if (matched === cards.length) {
-          document.getElementById('win-message').style.display = 'block';
-        }
-      } else {
-        card1.textContent = '';
-        card2.textContent = '';
-        card1.classList.remove('flipped');
-        card2.classList.remove('flipped');
-      }
-      flipped = [];
-    }
-
-    cards.forEach((emoji, index) => createCard(emoji, index));
-
-    // Floating hearts
-    function floatHearts() {
-      setInterval(() => {
-        const heart = document.createElement('div');
-        heart.className = 'heart';
-        heart.textContent = '💗';
-        heart.style.left = Math.random() * 100 + 'vw';
-        heart.style.fontSize = Math.random() * 20 + 20 + 'px';
-        document.body.appendChild(heart);
-        setTimeout(() => heart.remove(), 5000);
-      }, 800);
-    }
-    floatHearts();
-  </script>
-
-  <style>
-    @keyframes wiggle {
-      0% { transform: rotate(0deg); }
-      25% { transform: rotate(-5deg); }
-      50% { transform: rotate(5deg); }
-      75% { transform: rotate(-5deg); }
-      100% { transform: rotate(0deg); }
-    }
-
     @keyframes fall {
+      from {
+        transform: translateY(-50px);
+        opacity: 1;
+      }
       to {
         transform: translateY(100vh);
         opacity: 0;
       }
     }
-
-    @keyframes floatHeart {
-      0% {
-        transform: translateY(0) scale(1);
-        opacity: 0.6;
-      }
-      100% {
-        transform: translateY(-100vh) scale(1.5);
-        opacity: 0;
-      }
+    #message {
+      font-size: 1.5em;
+      margin-top: 20px;
+      color: #ff3399;
+      display: none;
+    }
+    .back-link {
+      position: fixed;
+      bottom: 20px;
+      text-decoration: none;
+      color: white;
+      background-color: #ff3399;
+      padding: 10px 20px;
+      border-radius: 10px;
     }
   </style>
+</head>
+<body>
+  <h1>💓 Click the Hearts!</h1>
+  <div id="score">Score: 0</div>
+  <div id="timer">Time: 30s</div>
+  <div id="message"></div>
+  <a href="index.html" class="back-link">⬅️ Back to Birthday</a>
+
+  <script>
+    let score = 0;
+    let timeLeft = 30;
+    let gameActive = true;
+
+    const scoreDisplay = document.getElementById('score');
+    const timerDisplay = document.getElementById('timer');
+    const message = document.getElementById('message');
+
+    function createHeart() {
+      if (!gameActive) return;
+
+      const heart = document.createElement('div');
+      heart.className = 'heart';
+      heart.textContent = '💖';
+      heart.style.left = Math.random() * 95 + 'vw';
+      heart.style.animationDuration = (Math.random() * 2 + 2) + 's';
+      heart.style.top = '-30px';
+      heart.addEventListener('click', () => {
+        score++;
+        scoreDisplay.textContent = 'Score: ' + score;
+        heart.remove();
+      });
+
+      document.body.appendChild(heart);
+
+      setTimeout(() => {
+        heart.remove();
+      }, 5000);
+    }
+
+    const heartInterval = setInterval(createHeart, 500);
+
+    const timer = setInterval(() => {
+      timeLeft--;
+      timerDisplay.textContent = 'Time: ' + timeLeft + 's';
+      if (timeLeft <= 0) {
+        clearInterval(timer);
+        clearInterval(heartInterval);
+        gameActive = false;
+        message.textContent = score > 10 ? `You're full of love! 💘 Score: ${score}` : `You caught ${score} hearts 💕`;
+        message.style.display = 'block';
+      }
+    }, 1000);
+  </script>
 </body>
 </html>
